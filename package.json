@@ -1,0 +1,41 @@
+{
+  "name": "@korfu/xray-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Xray Test Management in Jira integration",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "axios": "^1.6.0",
+    "zod": "^3.22.0",
+    "@types/node": "^20.12.7",
+    "commander": "^12.0.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.5",
+    "tsx": "^4.0.0",
+    "@types/node-fetch": "^2.6.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Korfu/mcp-xray.git"
+  },
+  "keywords": ["mcp", "xray", "jira", "cursor", "integration", "test-management"],
+  "author": "Korfu",
+  "license": "MIT"
+}
+
