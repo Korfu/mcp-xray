@@ -47,21 +47,44 @@ A Model Context Protocol (MCP) server that integrates Cursor IDE with Xray Test 
 - Jira Cloud account with Xray Test Management plugin installed
 - Jira API token for authentication
 
-## Setup
+## Installation
 
-### 1. Install Dependencies
+### Option 1: Install from npm (Recommended)
+
+The package is available on npm and can be used directly with npx:
+
+```bash
+npx @korfu/xray-mcp
+```
+
+No installation required! Continue to [Generate Jira API Token](#generate-jira-api-token) section.
+
+### Option 2: Local Development Setup
+
+If you want to contribute or modify the code:
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Korfu/mcp-xray.git
+cd mcp-xray
+```
+
+#### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Build the Project
+#### 3. Build the Project
 
 ```bash
 npm run build
 ```
 
-### 3. Generate Jira API Token
+## Setup
+
+### Generate Jira API Token
 
 1. Go to [Atlassian Account Settings](https://id.atlassian.com/manage-profile/security/api-tokens)
 2. Click "Create API token"
@@ -100,12 +123,13 @@ To fetch test steps from Xray, you need Xray Cloud API credentials:
 
 Add the following configuration to your Cursor MCP settings file (usually at `~/.cursor/mcp.json` or similar):
 
+**For npm installation (recommended):**
 ```json
 {
   "mcpServers": {
     "xray": {
-      "command": "node",
-      "args": ["/Users/korfu/ownProjects/XRayMCP/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "@korfu/xray-mcp"],
       "env": {
         "JIRA_BASE_URL": "https://your-domain.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
