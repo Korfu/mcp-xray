@@ -55,13 +55,29 @@ export async function createTestPlan(
     );
 
     const project = issueTypesResponse.data.projects[0];
-    const testPlanIssueType = project.issuetypes.find(
-      (type: any) => type.name === 'Test Plan'
-    );
+    const issueTypes: Array<{ id: string; name: string }> = project.issuetypes;
+
+    // Xray's Jira issue type for plans is named "Test Plan" by default, but
+    // some tenants customize it to "Xray Test Plan". Mirror the matching
+    // strategy used by createTestExecution for consistency.
+    const candidateNames = [
+      process.env.XRAY_TEST_PLAN_ISSUE_TYPE_NAME,
+      'Test Plan',
+      'Xray Test Plan',
+    ].filter((n): n is string => Boolean(n));
+
+    const testPlanIssueType =
+      issueTypes.find((type) => candidateNames.includes(type.name)) ??
+      issueTypes.find((type) => /^(xray\s+)?test\s+plan$/i.test(type.name));
 
     if (!testPlanIssueType) {
+      const available = issueTypes.map((t) => t.name).join(', ') || '(none)';
       throw new Error(
-        `Test Plan issue type not found in project ${projectKey}. Make sure Xray is installed.`
+        `Test Plan issue type not found in project ${projectKey}. ` +
+          `Tried: ${candidateNames.join(', ')}. ` +
+          `Available issue types in this project: ${available}. ` +
+          `If Xray uses a custom issue type name here, set the ` +
+          `XRAY_TEST_PLAN_ISSUE_TYPE_NAME env var to that name.`
       );
     }
 
