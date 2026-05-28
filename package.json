@@ -1,6 +1,6 @@
 {
   "name": "@korfu/xray-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MCP server for Xray Test Management in Jira integration",
   "main": "dist/index.js",
   "bin": "dist/index.js",
@@ -34,8 +34,14 @@
     "type": "git",
     "url": "git+https://github.com/Korfu/mcp-xray.git"
   },
-  "keywords": ["mcp", "xray", "jira", "cursor", "integration", "test-management"],
+  "keywords": [
+    "mcp",
+    "xray",
+    "jira",
+    "cursor",
+    "integration",
+    "test-management"
+  ],
   "author": "Korfu",
   "license": "MIT"
 }
-
