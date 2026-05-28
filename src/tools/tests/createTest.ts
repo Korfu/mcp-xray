@@ -73,13 +73,30 @@ export async function createTest(
     );
 
     const project = issueTypesResponse.data.projects[0];
-    const testIssueType = project.issuetypes.find(
-      (type: any) => type.name === 'Test'
-    );
+    const issueTypes: Array<{ id: string; name: string }> = project.issuetypes;
+
+    // Xray's Jira issue type is named "Test" by default, but many tenants
+    // customize it to "Xray Test" (and a few to other variants like
+    // "Test Case"). Look for the configured name first, then well-known
+    // defaults, then any case-insensitive match on /^(xray\s+)?test$/.
+    const candidateNames = [
+      process.env.XRAY_TEST_ISSUE_TYPE_NAME,
+      'Test',
+      'Xray Test',
+    ].filter((n): n is string => Boolean(n));
+
+    const testIssueType =
+      issueTypes.find((type) => candidateNames.includes(type.name)) ??
+      issueTypes.find((type) => /^(xray\s+)?test$/i.test(type.name));
 
     if (!testIssueType) {
+      const available = issueTypes.map((t) => t.name).join(', ') || '(none)';
       throw new Error(
-        `Test issue type not found in project ${projectKey}. Make sure Xray is installed.`
+        `Xray Test issue type not found in project ${projectKey}. ` +
+          `Tried: ${candidateNames.join(', ')}. ` +
+          `Available issue types in this project: ${available}. ` +
+          `If Xray uses a custom issue type name here, set the ` +
+          `XRAY_TEST_ISSUE_TYPE_NAME env var to that name.`
       );
     }
 
